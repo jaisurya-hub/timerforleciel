@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Timer</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #000; /* Dark theme background */
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            opacity: 0.8; /* Adjust opacity for a darker look */
+        }
+
+        .timer-container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.8); /* Dark transparent background for timer container */
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8);
+            z-index: 1;
+            width: 600px; /* Increased width for larger timer container */
+        }
+
+        .timer-container h2 {
+            font-size: 24px;
+            color: #ff4500;
+            margin-bottom: 10px;
+            text-shadow: 0 0 8px rgba(255, 69, 0, 0.8);
+            font-family: 'Roboto', sans-serif;
+            font-weight: 400;
+        }
+
+        .timer-container h3 {
+            font-size: 48px; /* Larger font size for the heading */
+            color: #ff4500;
+            margin: 20px 0;
+            text-shadow: 0 0 12px rgba(255, 69, 0, 1);
+            font-family: 'Roboto', sans-serif; /* Decorative font for the title */
+            font-weight: bold;
+        }
+
+        .timer-container .subheading {
+            font-size: 24px;
+            color: #ff4500;
+            margin-bottom: 20px;
+            text-shadow: 0 0 8px rgba(255, 69, 0, 0.8);
+            font-family: 'Great Vibes', cursive; /* Decorative font for the subheading */
+        }
+
+        .time {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px; /* Increased gap between time sections */
+            align-items: center;
+        }
+
+        .time div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .flip-box {
+            position: relative;
+            width: 80px; /* Increased width for larger flip box */
+            height: 100px; /* Increased height for larger flip box */
+            border-radius: 5px;
+            background: rgba(0, 0, 0, 0.7); /* Slightly transparent background for flip box */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 2px;
+            border: 2px solid #444;
+            overflow: hidden;
+        }
+
+        .number {
+            color: #ff4500; /* Orange color for numbers */
+            font-size: 50px; /* Increased font size for numbers */
+            font-weight: bold;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+
+        .flip-box {
+            perspective: 1000px;
+        }
+
+        .flip-box .flip-inner {
+            transition: transform 0.5s; /* Adjusted duration for flip */
+            transform-style: preserve-3d;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .flip-box.flip .flip-inner {
+            transform: rotateX(90deg); /* Flip effect */
+        }
+
+        .flip-box .number.current {
+            opacity: 1;
+        }
+
+        .flip-box .number.next {
+            opacity: 0;
+        }
+
+        .label {
+            font-size: 18px; /* Adjusted font size for labels */
+            color: #ff4500;
+            margin: 5px 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Font styling */
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    </style>
+</head>
+<body>
+
+    <!-- Video background -->
+    <video class="video-background" autoplay muted loop>
+        <source src="198020-906217285_medium.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="timer-container">
+        <div class="subheading">𝓰𝓮𝓽 𝓻𝓮𝓪𝓭𝔂 𝓯𝓸𝓻</div>
+        <h3>𝕝𝕖 𝕔𝕚𝕖𝕝 𝟚𝟘𝟚𝟜</h3>
+        <div class="time">
+            <div>
+                <div class="flip-box" id="days-box">
+                    <div class="flip-inner">
+                        <div class="number current" id="days">0</div>
+                        <div class="number next">0</div>
+                    </div>
+                </div>
+                <div class="label">Days</div>
+            </div>
+            <div>
+                <div class="flip-box" id="hours-box">
+                    <div class="flip-inner">
+                        <div class="number current" id="hours">0</div>
+                        <div class="number next">0</div>
+                    </div>
+                </div>
+                <div class="label">Hours</div>
+            </div>
+            <div>
+                <div class="flip-box" id="minutes-box">
+                    <div class="flip-inner">
+                        <div class="number current" id="minutes">0</div>
+                        <div class="number next">0</div>
+                    </div>
+                </div>
+                <div class="label">Minutes</div>
+            </div>
+            <div>
+                <div class="flip-box" id="seconds-box">
+                    <div class="flip-inner">
+                        <div class="number current" id="seconds">0</div>
+                        <div class="number next">0</div>
+                    </div>
+                </div>
+                <div class="label">Seconds</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set the target date to September 19, 2024, 12:00 PM
+        const targetDate = new Date('September 19, 2024 12:00:00').getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            // Calculate days, hours, minutes, and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update the numbers
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+
+            const secondsElement = document.getElementById('seconds');
+            const currentSeconds = secondsElement.textContent;
+            if (currentSeconds != seconds) {
+                const flipBox = document.getElementById('seconds-box');
+                flipBox.classList.add('flip');
+                setTimeout(() => {
+                    secondsElement.textContent = seconds;
+                    flipBox.classList.remove('flip');
+                }, 250); // Half of the flip duration
+            }
+        }
+
+        // Update the countdown every second
+        setInterval(updateTimer, 1000);
+
+        // Initialize timer immediately
+        updateTimer();
+    </script>
+
+</body>
+</html>
